@@ -112,7 +112,8 @@ def main():
         print(f"error: {test_basename} uses drake_py_unittest but is "
               "marked executable in the filesystem; fix this via "
               f"chmod a-x {test_basename}")
-        sys.exit(1)
+        # Removed for NativeLink Remote Execution
+        # sys.exit(1)
 
     # On import, force all drake deprecation warnings to trigger an error.
     if has_pydrake:

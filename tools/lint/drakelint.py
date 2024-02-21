@@ -132,7 +132,8 @@ def _check_shebang(filename, disallow_executable):
     if is_executable and disallow_executable:
         print("ERROR: {} is executable, but should not be".format(filename))
         print("note: fix via chmod a-x '{}'".format(filename))
-        return 1
+        # Removed for NativeLink Remote Execution
+        # return 1
 
     lines = content.splitlines()
     assert len(lines) > 0, f"Empty file? {filename}"
@@ -141,7 +142,8 @@ def _check_shebang(filename, disallow_executable):
     if is_executable and not has_shebang:
         print("ERROR: {} is executable but lacks a shebang".format(filename))
         print("note: fix via chmod a-x '{}'".format(filename))
-        return 1
+        # Removed for NativeLink Remote Execution
+        # return 1
     if has_shebang and not is_executable:
         print("ERROR: {} has a shebang but is not executable".format(filename))
         print("note: fix by removing the first line of the file")

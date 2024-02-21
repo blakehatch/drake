@@ -11,3 +11,30 @@ import %workspace%/gen/environment.bazelrc
 
 # Try to import user-specific configuration local to workspace.
 try-import %workspace%/user.bazelrc
+
+# Ensure that we're not leaking local PATH and LD_LIBRARY_PATH information into
+# the build.
+common --incompatible_strict_action_env
+
+common --noincompatible_sandbox_hermetic_tmp
+
+# build:nativelink --crosstool_top=@nativelink//local-remote-execution/generated/cc:toolchain
+
+# Specify a "sane" C++ toolchain for the host platform.
+
+# build:nativelink --host_crosstool_top=@nativelink//local-remote-execution/generated/cc:toolchain
+
+# Nativelink is currently blocked from working with bzlmod. This is a high prio
+# issue.
+build:nativelink --noenable_bzlmod
+
+# Basic remote execution configuration.
+build:nativelink --define=EXECUTOR=remote
+build:nativelink --repo_env=BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=0
+
+# The instance name for nativelink. Most likely `main` is correct here.
+# Depending on the nativelink configuration this might need to be adjusted.
+build:nativelink --remote_instance_name=main
+
+build:nativelink --remote_executor=grpcs://cas-demo24.build-faster.nativelink.net:443/
+build:nativelink --remote_cache=grpcs://scheduler-demo24.build-faster.nativelink.net:443/
